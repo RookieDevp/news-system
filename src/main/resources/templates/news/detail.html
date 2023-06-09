@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻管理系统</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<!-- 头部 -->
+<div id="header">
+    <div id="top_login">
+        <form method="post" th:action="@{/users/login}" th:if="${session.loginUser==null}">
+            <label> 登录名 </label>
+            <input type="text" name="userName" id="uname" value="" class="login_input"/>
+            <label> 密&#160;&#160;码 </label>
+            <input type="password" name="password" id="upwd" value="" class="login_input"/>
+            <input type="submit" class="login_sub" value="登录"/>
+            <label id="error"></label>
+            <img src="/images/friend_logo.gif" alt="Google" id="friend_logo"/>
+        </form>
+        <p th:if="${session.loginUser!=null}">
+            <span>欢迎您：[[${session.loginUser.uname}]]</span>
+            <a th:href="@{/news/manager}">进入控制台</a>
+            <a href="/users/logout">退出</a>
+        </p>
+    </div>
+    <div id="nav">
+        <div id="logo"><img src="/images/logo.jpg" alt="新闻中国"/></div>
+        <div id="a_b01"><img src="/images/a_b01.gif" alt="" style="margin-top: 12px;"/></div>
+    </div>
+</div>
+
+<!-- 页面主体区域 -->
+<div id="container">
+    <!-- 左侧分类栏 -->
+    <div class="sidebar">
+        <h1><img src="/images/title_1.gif" alt="国内新闻"/></h1>
+        <div class="side_list">
+            <ul>
+                <li th:each="news : ${newsList1}"><a th:href="@{/news/detail/}+${news.nid}"><b> [[${news.ntitle}]] </b></a>
+                </li>
+            </ul>
+        </div>
+        <h1><img src="/images/title_2.gif" alt="国际新闻"/></h1>
+        <div class="side_list">
+            <ul>
+                <li th:each="news : ${newsList2}"><a th:href="@{/news/detail/}+${news.nid}"><b> [[${news.ntitle}]] </b></a>
+                </li>
+            </ul>
+        </div>
+        <h1><img src="/images/title_3.gif" alt="娱乐新闻"/></h1>
+        <div class="side_list">
+            <ul>
+                <li th:each="news : ${newsList3}"><a th:href="@{/news/detail/}+${news.nid}"><b> [[${news.ntitle}]] </b></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 主体区域 -->
+    <div class="main">
+        <div class="class_type"><img src="/images/class_type.gif" alt="新闻中心"/></div>
+        <div class="content" style="width: 100%!important;">
+            <ul class="classlist">
+                <table width="100%" align="center">
+                    <tr width="100%">
+                        <td colspan="2" align="center" th:text="${news.ntitle}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">作者：[[${news.nauthor}]]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </td>
+                        <td align="left">发布时间：<span
+                                th:text="${#dates.format(news.ncreateDate,'yyyy-MM-dd HH:mm:ss')}"></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" th:text="${news.ncontent}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <hr/>
+                        </td>
+                    </tr>
+                </table>
+            </ul>
+            <ul class="classlist">
+                <table width="80%" align="center" th:if="${commentsList.size()==0}">
+                    <tr>
+                        <td colspan="6"> 暂无评论！</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <hr/>
+                        </td>
+                    </tr>
+                </table>
+                <table width="80%" align="center" th:if="${commentsList.size()>0}">
+                    <tr th:each="comment:${commentsList}">
+                        <td> 留言人：</td>
+                        <td th:text="${comment.cauthor}"></td>
+                        <td> IP：</td>
+                        <td th:text="${comment.cip}"></td>
+                        <td> 留言时间：</td>
+                        <td th:text="${#dates.format(comment.cdate,'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td colspan="6" th:text="${comment.ccontent}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">
+                            <hr/>
+                        </td>
+                    </tr>
+                </table>
+            </ul>
+            <ul class="classlist">
+                <form th:action="@{/comments/add}" method="post" onSubmit="return checkComment()">
+                    <input type="hidden" name="cnid" th:value="${news.nid}"/>
+                    <table width="80%" align="center">
+                        <tr>
+                            <td> 评 论</td>
+                        </tr>
+                        <tr>
+                            <td> 用户名：</td>
+                            <td>
+                                <input  name="cauthor" th:if="${session.loginUser!=null}"
+                                       th:value="${session.loginUser.uname}"
+                                       readonly="readonly" style="border:0px;"/>
+
+                                <input th:if="${session.loginUser==null}" name="cauthor" value="这家伙很懒什么也没留下"/>
+
+                                IP：
+                                <input name="cip" id="cip" th:value="${#request.remoteAddr}" readonly="readonly"
+                                       style="border:0px;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><textarea name="ccontent" id="ccontent" cols="70" rows="10"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input name="submit" value="发  表" type="submit"/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- 底部 -->
+<div th:insert="common/common::index-bottom"></div>
+<script type="text/javascript">
+    function checkComment(){
+        var content = document.getElementById("ccontent");
+        if(content.value == ""){
+            alert("评论内容不能为空！！");
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

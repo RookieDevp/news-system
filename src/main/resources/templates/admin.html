@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻管理系统</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<!-- 头部 -->
+<div th:insert="common/common::admin-top"></div>
+<div id="main">
+    <!-- 左侧菜单栏 -->
+    <div id="left" th:insert="common/common::leftMenu"></div>
+    <div id="opt_area">
+        <script type="text/javascript">
+            function clickdel(nid) {
+                if (confirm("此新闻的相关评论也将删除，确定删除吗？"))
+                    window.location = "/news/deleteById/" + nid;
+            }
+        </script>
+        <ul class="classlist">
+            <li th:each="news : ${page.getRecords()} ">
+                [[${news.ntitle}]]
+                <span> 作者：[[${news.nauthor}]]
+                <a th:href='@{/news/edit/}+${news.nid}'>修改</a>
+                <a href='javascript:;' th:onclick="clickdel([[${news.nid}]])">删除</a></span>
+            </li>
+        </ul>
+        <p align="right">
+            当前页数:[<span th:text="${page.current}">1</span>/<span th:text="${page.pages}">2</span>]&nbsp;
+            <span th:if="${page.current>1}">
+                        <a th:href="@{/news/manager(pageNo=1)}">首页</a>
+                        <a th:href="@{/news/manager(pageNo=${page.current - 1})}">上一页</a>
+                    </span>
+            <span th:if="${page.current<=1}">
+                        首页&nbsp;
+                        上一页&nbsp;
+                    </span>
+            <span th:if="${page.current<page.pages}">
+                        <a th:href="@{/news/manager(pageNo=${page.current + 1})}">下一页</a>
+                        <a th:href="@{/news/manager(pageNo=${page.pages})}">末页</a>
+                    </span>
+            <span th:if="${page.current>=page.pages}">
+                        下一页&nbsp;
+                        末页&nbsp;
+                    </span>
+        </p>
+    </div>
+</div>
+<div id="footer" th:insert="common/common::footer">
+
+</div>
+</body>
+</html>

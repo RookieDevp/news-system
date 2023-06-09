@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻管理系统</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<!-- 头部 -->
+<div th:insert="common/common::admin-top"></div>
+<div id="main">
+    <!-- 左侧菜单栏 -->
+    <div id="left" th:insert="common/common::leftMenu"></div>
+    <div id="opt_area">
+        <h1 id="opt_type"> 添加主题： </h1>
+        <form th:action="@{/topic/edit}" method="post" onsubmit="return check()">
+            <p>
+                <label> 主题名称 </label>
+                <input type="hidden" name="tid" th:value="${topic.tid}">
+                <input name="tname" type="text" class="opt_input" id="tname" th:value="${topic.tname}"/>
+            </p>
+            <input type="submit" value="提交" class="opt_sub"/>
+            <input type="reset" value="重置" class="opt_sub"/>
+        </form>
+    </div>
+</div>
+<div id="footer" th:insert="common/common::footer"></div>
+<script type="text/javascript">
+    function check(){
+        var tname = document.getElementById("tname");
+        if(tname.value == ""){
+            alert("请输入主题名称！！");
+            tname.focus();
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

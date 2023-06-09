@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!-- 后台左侧菜单栏 -->
+<div id="opt_list" th:fragment="leftMenu">
+    <ul>
+        <li><a th:href="@{/news/manager}">新闻列表</a></li>
+        <li><a href="/news/add.html">添加新闻</a></li>
+        <li><a href="/topic/list">主题列表</a></li>
+        <li><a href="/topic/add.html">添加主题</a></li>
+    </ul>
+</div>
+
+<!-- 后台底部版权 -->
+<div th:fragment="footer">
+    <div id="site_link"> <a href="#">关于我们</a><span>|</span> <a href="#">Aboue Us</a><span>|</span> <a href="#">联系我们</a><span>|</span> <a href="#">广告服务</a><span>|</span> <a href="#">供稿服务</a><span>|</span> <a href="#">法律声明</a><span>|</span> <a href="#">招聘信息</a><span>|</span> <a href="#">网站地图</a><span>|</span> <a href="#">留言反馈</a> </div>
+    <div id="footer">
+        <p class="">24小时客户服务热线：010-68988888  &#160;&#160;&#160;&#160; <a href="#">常见问题解答</a> &#160;&#160;&#160;&#160;  新闻热线：010-627488888<br />
+            文明办网文明上网举报电话：010-627488888  &#160;&#160;&#160;&#160;  举报邮箱：<a href="#">jubao@jb-aptech.com.cn</a></p>
+        <p class="copyright">Copyright &copy; 1999-2009 News China gov, All Right Reserver<br />
+            新闻中国   版权所有</p>
+    </div>
+</div>
+
+<!-- 后台头部 -->
+<div th:fragment="admin-top">
+    <div id="header">
+        <div id="welcome">欢迎使用新闻管理系统！</div>
+        <div id="nav">
+            <div id="logo"><img src="/images/logo.jpg" alt="新闻中国"/></div>
+            <div id="a_b01"><img src="/images/a_b01.gif" alt=""/></div>
+        </div>
+    </div>
+    <div id="admin_bar">
+        <div id="status">
+            <p th:if="${session.loginUser!=null}">
+                <span>欢迎您：[[${session.loginUser.uname}]]</span>
+                <a href="/">返回首页</a>
+                <a href="/users/logout">退出</a>
+            </p>
+        </div>
+        <div id="channel"></div>
+    </div>
+</div>
+
+<!-- 前台底部 -->
+<div th:fragment="index-bottom">
+    <div id="friend">
+        <h1 class="friend_t"> <img src="images/friend_ico.gif" alt="合作伙伴" /> </h1>
+        <div class="friend_list">
+            <ul>
+                <li> <a href="#">百度</a> </li>
+                <li> <a href="#">谷歌</a> </li>
+                <li> <a href="#">新浪</a> </li>
+                <li> <a href="#">网易</a> </li>
+                <li> <a href="#">搜狐</a> </li>
+                <li> <a href="#">人人</a> </li>
+                <li> <a href="#">中国政府网</a> </li>
+            </ul>
+        </div>
+    </div>
+    <div id="footer">
+        <p class=""> 24小时客户服务热线：010-68988888 &#160;&#160;&#160;&#160; <a href="#">常见问题解答</a> &#160;&#160;&#160;&#160; 新闻热线：010-627488888 <br />
+            文明办网文明上网举报电话：010-627488888 &#160;&#160;&#160;&#160; 举报邮箱： <a href="#">jubao@jb-aptech.com.cn</a> </p>
+        <p class="copyright"> Copyright &copy; 1999-2009 News China gov, All Right Reserver <br />
+            新闻中国 版权所有 </p>
+    </div>
+</div>
+
+</body>
+</html>

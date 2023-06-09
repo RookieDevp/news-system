@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guet.newsproject.mapper.NewsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.guet.newsproject.entity.News">
+        <id column="nid" property="nid" />
+        <result column="ntid" property="ntid" />
+        <result column="ntitle" property="ntitle" />
+        <result column="nauthor" property="nauthor" />
+        <result column="ncreateDate" property="ncreateDate" />
+        <result column="npicPath" property="npicPath" />
+        <result column="ncontent" property="ncontent" />
+        <result column="nmodifyDate" property="nmodifyDate" />
+        <result column="nsummary" property="nsummary" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        nid, ntid, ntitle, nauthor, ncreateDate, npicPath, ncontent, nmodifyDate, nsummary
+    </sql>
+
+    <select id="getNewsListByPage" resultType="com.guet.newsproject.entity.News">
+        select * from news
+        <where>
+            <if test="news!=null and news.ntid!=null">
+                and ntid = #{news.ntid}
+            </if>
+        </where>
+        order by ncreateDate desc
+    </select>
+
+</mapper>

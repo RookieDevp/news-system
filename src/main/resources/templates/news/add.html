@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻管理系统</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<!-- 头部 -->
+<div th:insert="common/common::admin-top"></div>
+<div id="main">
+    <!-- 左侧菜单栏 -->
+    <div id="left" th:insert="common/common::leftMenu"></div>
+    <div id="opt_area">
+        <h1 id="opt_type"> 添加新闻： </h1>
+        <form th:action="@{/news/add}" method="post" enctype="multipart/form-data">
+            <p>
+                <label>主题</label>
+                <select name="ntid">
+                    <option value="">请选择主题</option>
+                    <option th:each="topic : ${topicList}" th:value='${topic.tid}'>[[${topic.tname}]]</option>
+                </select>
+            </p>
+            <p>
+                <label>标题</label>
+                <input name="ntitle" type="text" class="opt_input"/>
+            </p>
+            <p>
+                <label>作者</label>
+                <input name="nauthor" type="text" class="opt_input"/>
+            </p>
+            <p>
+                <label>摘要</label>
+                <textarea name="nsummary" cols="40" rows="3"></textarea>
+            </p>
+            <p>
+                <label>内容</label>
+                <textarea name="ncontent" cols="70" rows="10"></textarea>
+            </p>
+            <p>
+                <label>上传图片</label>
+                <input name="file" type="file" class="opt_input"/>
+            </p>
+            <input type="submit" value="提交" class="opt_sub"/>
+            <input type="reset" value="重置" class="opt_sub"/>
+        </form>
+    </div>
+</div>
+<div id="footer" th:insert="common/common::footer"></div>
+</body>
+</html>
